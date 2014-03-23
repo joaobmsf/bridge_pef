@@ -10,10 +10,9 @@ function Aresta.atualizaN()
 end
 
 function Aresta.getNewID()
-	local id = Aresta.n;
 	Aresta.atualizaN();
 	
-	return id;
+	return Aresta.n;
 end
 
 function Aresta.new(juncao1, juncao2)
