@@ -40,6 +40,16 @@ function Juncao.add(juncao, conjunto)
 	juncao.id                   = Juncao.getNewId(conjunto);
 	juncao.conjunto             = conjunto;
 	conjunto.juncoes[juncao.id] = juncao;
+	conjunto.matrix[juncao.id]  = {};
+	conjunto.vazio = false;
+end
+
+function Juncao.addAresta(aresta, conjunto)
+	local id1 = aresta.j1.id;
+	local id2 = aresta.j2.id;
+	
+	conjunto.matrix[id1][id2] = aresta;
+	conjunto.matrix[id2][id1] = aresta;
 end
 
 --[[ 
