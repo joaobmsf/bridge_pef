@@ -20,6 +20,7 @@ function Game.load()
 	Game.estado = Game.CRIANDO_ARESTA;
 	
 	Game.level = 1;
+	Game.maxAresta = 50*math.sqrt(2);
 	
 	Game.lastClicked       = nil;
 	Game.arestaSelecionada = nil;
@@ -51,7 +52,8 @@ function Game.update(dt)
 	elseif Game.estado == Game.JUNCAO_SELECIONADA and Game.lastClicked ~= nil then
 		local juncaoCol = Colisoes.mouseJuncoes(Game.lastClicked, Game.conj);
 		if juncaoCol ~= nil and juncaoCol ~= Game.juncaoSelecionada then
-			if Game.conj.matrix[juncaoCol.id][Game.juncaoSelecionada.id] == nil then
+			if Game.conj.matrix[juncaoCol.id][Game.juncaoSelecionada.id] == nil
+			   and Vetor2D.distancia(juncaoCol.pos, Game.juncaoSelecionada.pos) <= Game.maxAresta then
 				Aresta.new(juncaoCol, Game.juncaoSelecionada, Aresta.ESTRUTURA);
 				Game.estado = Game.CRIANDO_ARESTA;
 				Game.juncaoSelecionada = nil;
