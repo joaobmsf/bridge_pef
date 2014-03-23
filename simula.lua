@@ -1,4 +1,5 @@
 require 'trem'
+require 'aresta'
 Simula = {}
 
 function Simula.drawBotao ()
@@ -65,12 +66,31 @@ function Simula.verificaPlay(conj)
     return 1;
 end
 
-function Simula.inicia()
+function Simula.addEdgeShape(aresta)
+	edge = {}
+	edge.body = love.physics.newBody(Simula.world, aresta.j1.pos.x, aresta.j1.pos.y)
+	edge.shape = love.physics.newEdgeShape(0, 0, aresta.j2.pos.x - aresta.j1.pos.x, aresta.j2.pos.y - aresta.j1.pos.y);
+	edge.fixture = love.physics.newFixture(edge.body, edge.shape)
+	edge.fixture:setFriction(3)
+end
+
+function Simula.inicia(conj)
 	local pixelInMeter = 50;
 	-- Set up world
 	love.physics.setMeter(pixelInMeter)
 	Simula.world = love.physics.newWorld(0, 9.81*pixelInMeter, true);
 	Simula.trem = Trem.novo(Simula.world, pixelInMeter);
+	
+	for i = 1, conj.nJuncoes do
+		for j = 1, i do
+			if i ~= j and conj.matrix[i][j] ~= nil then
+				if conj.matrix[i][j].tipo == Aresta.CAMINHO then
+				 Simula.addEdgeShape(conj.matrix[i][j]);
+				end				
+			end
+		end
+	end 
+	
 	Simula.running = true;
 end
 

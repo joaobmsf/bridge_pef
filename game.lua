@@ -59,7 +59,7 @@ function Game.construcaoUp (dt)
         local play = Simula.verificaPlay(Game.conj);
         if play == 1 then
             Game.megaEstado = Game.SIMULACAO;
-			Simula.inicia();
+			Simula.inicia(Game.conj);
         end
     end
 
