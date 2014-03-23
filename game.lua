@@ -50,7 +50,7 @@ function Game.update(dt)
 end
 
 function Game.simulacaoUp (dt)
-    -- aqui vem todos updates da simulação
+    Simula.update(dt);
 end
 
 function Game.construcaoUp (dt)
@@ -59,10 +59,11 @@ function Game.construcaoUp (dt)
         local play = Simula.verificaPlay(Game.conj);
         if play == 1 then
             Game.megaEstado = Game.SIMULACAO;
+			Simula.inicia();
         end
     end
 
-    if Game.estado == Game.CRIANDO_ARESTA and Game.lastClicked ~= nil then
+	if Game.estado == Game.CRIANDO_ARESTA and Game.lastClicked ~= nil then
 		-- Verifica se o ultimo clique foi em uma juncao
 		local juncaoCol = Colisoes.mouseJuncoes(Game.lastClicked, Game.conj);
 		if juncaoCol ~= nil then
@@ -107,20 +108,22 @@ end
 
 function Game.draw()
 	Estagio.draw(Game.level);
-    Simula.drawBotao();
+    Simula.draw()
 	Juncao.drawConjunto(Game.conj);
 
-	if Game.estado == Game.JUNCAO_SELECIONADA then
-		love.graphics.setColor(255, 0, 0, 100);
-        local dista = math.sqrt(math.pow((Game.juncaoSelecionada.pos.x - love.mouse.getX()),2)+math.pow((Game.juncaoSelecionada.pos.y - love.mouse.getY()),2))
-        if dista <= Game.maxAresta then
-            love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, love.mouse.getX(), love.mouse.getY());
-        else
-            local angulo = math.atan2(Game.juncaoSelecionada.pos.y - love.mouse.getY(), Game.juncaoSelecionada.pos.x - love.mouse.getX());
-            love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, Game.juncaoSelecionada.pos.x - Game.maxAresta*math.cos(angulo), Game.juncaoSelecionada.pos.y - Game.maxAresta*math.sin(angulo));
-        end
-	elseif Game.estado == Game.ARESTA_SELECIONADA then
-		Aresta.draw(Game.arestaSelecionada, {255, 0, 0});		
+	if Game.megaEstado == Game.CONSTRUCAO then
+		if Game.estado == Game.JUNCAO_SELECIONADA then
+			love.graphics.setColor(255, 0, 0, 100);
+			local dista = math.sqrt(math.pow((Game.juncaoSelecionada.pos.x - love.mouse.getX()),2)+math.pow((Game.juncaoSelecionada.pos.y - love.mouse.getY()),2))
+			if dista <= Game.maxAresta then
+				love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, love.mouse.getX(), love.mouse.getY());
+			else
+				local angulo = math.atan2(Game.juncaoSelecionada.pos.y - love.mouse.getY(), Game.juncaoSelecionada.pos.x - love.mouse.getX());
+				love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, Game.juncaoSelecionada.pos.x - Game.maxAresta*math.cos(angulo), Game.juncaoSelecionada.pos.y - Game.maxAresta*math.sin(angulo));
+			end
+		elseif Game.estado == Game.ARESTA_SELECIONADA then
+			Aresta.draw(Game.arestaSelecionada, {255, 0, 0});		
+		end
 	end
 end
 
@@ -134,29 +137,31 @@ end
 function Game.keypressed(key, isrepeat)
 	
 	if isrepeat == false then
-		if Game.estado == Game.ARESTA_SELECIONADA then
-			if key == "delete" then
-				Aresta.del(Game.arestaSelecionada);
-				Game.estado = Game.CRIANDO_ARESTA;
-				Game.lastClicked = nil;
-			elseif key == " " then
-				if Game.arestaSelecionada.tipo == Aresta.CAMINHO then
-					Aresta.mudarTipo(Game.arestaSelecionada, Aresta.ESTRUTURA);
-				elseif Game.arestaSelecionada.tipo == Aresta.ESTRUTURA then
-					Aresta.mudarTipo(Game.arestaSelecionada, Aresta.CAMINHO);
-				end
-				Game.estado = Game.CRIANDO_ARESTA;
-				Game.lastClicked = nil;
-			elseif key == "escape" then
+		if Game.megaEstado == Game.CONSTRUCAO then
+			if Game.estado == Game.ARESTA_SELECIONADA then
+				if key == "delete" then
+					Aresta.del(Game.arestaSelecionada);
 					Game.estado = Game.CRIANDO_ARESTA;
-					Game.lastClicked = nil;							
+					Game.lastClicked = nil;
+				elseif key == " " then
+					if Game.arestaSelecionada.tipo == Aresta.CAMINHO then
+						Aresta.mudarTipo(Game.arestaSelecionada, Aresta.ESTRUTURA);
+					elseif Game.arestaSelecionada.tipo == Aresta.ESTRUTURA then
+						Aresta.mudarTipo(Game.arestaSelecionada, Aresta.CAMINHO);
+					end
+					Game.estado = Game.CRIANDO_ARESTA;
+					Game.lastClicked = nil;
+				elseif key == "escape" then
+						Game.estado = Game.CRIANDO_ARESTA;
+						Game.lastClicked = nil;							
+				end
+			elseif Game.estado == Game.JUNCAO_SELECIONADA then
+				if key == "escape" then
+					print("ola");
+					Game.estado = Game.CRIANDO_ARESTA;
+					Game.lastClicked = nil;
+				end	
 			end
-		elseif Game.estado == Game.JUNCAO_SELECIONADA then
-			if key == "escape" then
-				print("ola");
-				Game.estado = Game.CRIANDO_ARESTA;
-				Game.lastClicked = nil;
-			end	
 		end
 	end
 end

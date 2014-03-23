@@ -1,3 +1,4 @@
+require 'trem'
 Simula = {}
 
 function Simula.drawBotao ()
@@ -64,7 +65,29 @@ function Simula.verificaPlay(conj)
     return 1;
 end
 
+function Simula.inicia()
+	local pixelInMeter = 50;
+	-- Set up world
+	love.physics.setMeter(pixelInMeter)
+	Simula.world = love.physics.newWorld(0, 9.81*pixelInMeter, true);
+	Simula.trem = Trem.novo(Simula.world, pixelInMeter);
+	Simula.running = true;
+end
 
+function Simula.update(dt)
+	if Simula.running == true then
+		Simula.world:update(dt)
+	end
+end
+
+function Simula.draw()
+	Simula.drawBotao()
+	if Simula.running == true then
+		print("ola");
+		love.graphics.setColor(200, 156, 27);
+		love.graphics.polygon("fill", Simula.trem.body:getWorldPoints(Simula.trem.shape:getPoints()));  
+	end
+end
 
 
 
