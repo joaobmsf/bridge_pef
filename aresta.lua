@@ -46,9 +46,9 @@ function Aresta.draw(aresta, color)
 	love.graphics.setLineWidth(Aresta.WIDTH);
 	if color ~= nil then
 		love.graphics.setColor(color);	
-	elseif aresta.tipo == Aresta.CAMINHO then
-		love.graphics.setColor(102, 0, 0);	
 	elseif aresta.tipo == Aresta.ESTRUTURA then
+		love.graphics.setColor(102, 0, 0);	
+	elseif aresta.tipo == Aresta.CAMINHO then
 		love.graphics.setColor(160, 160, 160);
 	else
 		print("ERROR Aresta.draw: tipo inexistente");	

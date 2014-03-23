@@ -26,8 +26,8 @@ function Estagio.load(level, conj)
         end
         jun[n] = Juncao.new(Vetor2D.new(800, 200), Juncao.FIXA, conj);
         
-        Aresta.new(jun[0], jun[7], Aresta.ESTRUTURA);
-        Aresta.new(jun[n-7], jun[n], Aresta.ESTRUTURA);
+        Aresta.new(jun[0], jun[7], Aresta.CAMINHO);
+        Aresta.new(jun[n-7], jun[n], Aresta.CAMINHO);
     end
 end
 
