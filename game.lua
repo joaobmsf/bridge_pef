@@ -4,6 +4,7 @@ require 'vetor2d'
 require 'testes'
 require 'colisoes'
 require 'estagio'
+require 'simula'
 
 Game = {}
 
@@ -11,12 +12,18 @@ Game = {}
 function Game.load()
 	Juncao.load();
 	Aresta.load();
-	
+
+    -- estados possiveis no jogo
+    Game.CONSTRUCAO = 1;
+    Game.SIMULACAO = 2;
+    
+    -- estados possiveis na simulacao
 	Game.CRIANDO_ARESTA     = 1;
 	Game.JUNCAO_SELECIONADA = 2;
 	Game.ARESTA_SELECIONADA = 3;
-	
-	
+	Game.SIMULA_SELECIONADO = 4;
+
+	Game.megaEstado = Game.CONSTRUCAO;
 	Game.estado = Game.CRIANDO_ARESTA;
 	
 	Game.level = 1;
@@ -35,7 +42,27 @@ function Game.load()
 end
 
 function Game.update(dt)
-	if Game.estado == Game.CRIANDO_ARESTA and Game.lastClicked ~= nil then 
+    if Game.megaEstado == Game.CONSTRUCAO then
+        Game.construcaoUp (dt)
+    else
+        Game.simulacaoUp (dt)
+    end
+end
+
+function Game.simulacaoUp (dt)
+    -- aqui vem todos updates da simulação
+end
+
+function Game.construcaoUp (dt)
+    botaoCol = Colisoes.mouseBotao(Game.lastClicked);
+    if botaoCol == 1 then
+        local play = Simula.verificaPlay(Game.conj);
+        if play == 1 then
+            Game.megaEstado = Game.SIMULACAO;
+        end
+    end
+
+    if Game.estado == Game.CRIANDO_ARESTA and Game.lastClicked ~= nil then
 		-- Verifica se o ultimo clique foi em uma juncao
 		local juncaoCol = Colisoes.mouseJuncoes(Game.lastClicked, Game.conj);
 		if juncaoCol ~= nil then
@@ -76,9 +103,12 @@ function Game.update(dt)
 	end
 end
 
+
 function Game.draw()
 	Estagio.draw(Game.level);
+    Simula.drawBotao();
 	Juncao.drawConjunto(Game.conj);
+
 	if Game.estado == Game.JUNCAO_SELECIONADA then
 		love.graphics.setColor(255, 0, 0, 100);
         local dista = math.sqrt(math.pow((Game.juncaoSelecionada.pos.x - love.mouse.getX()),2)+math.pow((Game.juncaoSelecionada.pos.y - love.mouse.getY()),2))

@@ -4,6 +4,7 @@ require 'vetor2d'
 require 'testes'
 require 'game'
 require 'estagio'
+require 'simula'
 
 function love.load() 
 	Game.load();

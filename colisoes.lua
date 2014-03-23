@@ -32,3 +32,14 @@ function Colisoes.mouseAresta(pos, conj)
 	end
 	return nil;
 end
+
+function Colisoes.mouseBotao(pos)
+    -- x: 25, y: 525, xx: 50, yy:50
+    
+    if pos ~= nil then
+        if pos.x >= 25 and pos.x <= 75 and pos.y >=525 and pos.y <=575 then
+            return 1;
+        end
+    end
+    return 0;
+end
