@@ -100,6 +100,7 @@ function Game.construcaoUp (dt)
 				Game.estado = Game.ARESTA_SELECIONADA;
 			end
 		end	
+		Game.lastClicked = nil;
 	end
 end
 
@@ -127,5 +128,33 @@ function Game.mousereleased(x, y, button)
 	if button == "l" then
 		print("Mouse released");
 		Game.lastClicked = Vetor2D.new(x, y);
+	end
+end
+
+function Game.keypressed(key, isrepeat)
+	
+	if isrepeat == false then
+		if Game.estado == Game.ARESTA_SELECIONADA then
+			if key == "delete" then
+				Aresta.del(Game.arestaSelecionada);
+				Game.estado = Game.CRIANDO_ARESTA;
+				Game.lastClicked = nil;
+			elseif key == " " then
+				if Game.arestaSelecionada.tipo == Aresta.CAMINHO then
+					Aresta.mudarTipo(Game.arestaSelecionada, Aresta.ESTRUTURA);
+				elseif Game.arestaSelecionada.tipo == Aresta.ESTRUTURA then
+					Aresta.mudarTipo(Game.arestaSelecionada, Aresta.CAMINHO);
+				end
+			elseif key == "escape" then
+					Game.estado = Game.CRIANDO_ARESTA;
+					Game.lastClicked = nil;							
+			end
+		elseif Game.estado == Game.JUNCAO_SELECIONADA then
+			if key == "escape" then
+				print("ola");
+				Game.estado = Game.CRIANDO_ARESTA;
+				Game.lastClicked = nil;
+			end	
+		end
 	end
 end
