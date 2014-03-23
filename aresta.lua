@@ -4,6 +4,7 @@ Aresta = {}
 
 function Aresta.load()
 	Aresta.n = 0;
+	Aresta.WIDTH = 10;
 	Aresta.CAMINHO   = 1;
 	Aresta.ESTRUTURA = 2;
 end
@@ -41,8 +42,11 @@ function Aresta.new(juncao1, juncao2, tipo)
 	return aresta;
 end
 
-function Aresta.draw(aresta)
-	if aresta.tipo == Aresta.CAMINHO then
+function Aresta.draw(aresta, color)
+	love.graphics.setLineWidth(Aresta.WIDTH);
+	if color ~= nil then
+		love.graphics.setColor(color);	
+	elseif aresta.tipo == Aresta.CAMINHO then
 		love.graphics.setColor(102, 0, 0);	
 	elseif aresta.tipo == Aresta.ESTRUTURA then
 		love.graphics.setColor(160, 160, 160);

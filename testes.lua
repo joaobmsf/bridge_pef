@@ -6,7 +6,6 @@ Testes = {}
 
 function Testes.teste1()
 
-
 	local v = Vetor2D.new();
 	local conj = Juncao.newConjunto();
 	print(v.x, v.y);
