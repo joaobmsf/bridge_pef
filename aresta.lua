@@ -4,6 +4,8 @@ Aresta = {}
 
 function Aresta.load()
 	Aresta.n = 0;
+	Aresta.CAMINHO   = 1;
+	Aresta.ESTRUTURA = 2;
 end
 
 
@@ -37,4 +39,21 @@ function Aresta.new(juncao1, juncao2, tipo)
 	Juncao.addAresta(aresta, juncao1.conjunto);
 	
 	return aresta;
+end
+
+function Aresta.draw(aresta)
+	if aresta.tipo == Aresta.CAMINHO then
+		love.graphics.setColor(102, 0, 0);	
+	elseif aresta.tipo == Aresta.ESTRUTURA then
+		love.graphics.setColor(160, 160, 160);
+	else
+		print("ERROR Aresta.draw: tipo inexistente");	
+	end
+	
+	local x1 = aresta.j1.pos.x;
+	local y1 = aresta.j1.pos.y;
+	local x2 = aresta.j2.pos.x;
+	local y2 = aresta.j2.pos.y;
+	
+	love.graphics.line(x1, y1, x2, y2);	
 end

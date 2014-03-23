@@ -2,6 +2,9 @@ Juncao = {}
 
 function Juncao.load()
 	Juncao.nConjuntos = 0;
+	Juncao.FIXA  = 1;
+	Juncao.LIVRE = 2;
+	Juncao.RAIO  = 5;
 end
 
 function Juncao.newConjuntoId()
@@ -79,5 +82,31 @@ function Juncao.imprime(conjunto)
 			end
 		end	
 		io.write("\n");
+	end
+end
+
+function Juncao.draw(juncao)
+	if juncao.tipo == Juncao.FIXA then
+		love.graphics.setColor(0, 0, 0);	
+	elseif juncao.tipo == Juncao.LIVRE then
+		love.graphics.setColor(255, 102, 102);
+	else
+		print("ERROR Juncao.draw: tipo inexistente");	
+	end
+	
+	love.graphics.circle("fill", juncao.pos.x, juncao.pos.y, Juncao.RAIO);	
+end
+
+function Juncao.drawConjunto(conjunto)
+	for i = 1, conjunto.nJuncoes do
+		for j = 1, i do
+			if i ~= j and conjunto.matrix[i][j] ~= nil then
+				Aresta.draw(conjunto.matrix[i][j]);
+			end
+		end	
+		io.write("\n");
+	end
+	for i = 1, conjunto.nJuncoes do
+		Juncao.draw(conjunto.juncoes[i]);
 	end
 end
