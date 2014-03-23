@@ -6,25 +6,15 @@ require 'game'
 require 'estagio'
 
 function love.load() 
-	Juncao.load();
-	Aresta.load();
-	--Game.load();
-	
-	love.graphics.setBackgroundColor(102, 178, 255);
-	
-	conj = Juncao.newConjunto();
-    Estagio.load(1, conj);
-
-    Juncao.imprime(conj);
+	Game.load();
 end
 
 function love.update(dt)
-	--Game.update(dt);
+	Game.update(dt);
 end
 
 function love.draw()
-	--Game.draw();
-	Estagio.draw(1, conj);
+	Game.draw();
 end
 
 function love.mousereleased(x, y, button)

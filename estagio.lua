@@ -35,8 +35,7 @@ end
     Estagio.draw imprime os pontos de junção e as colinas, conforme o level desejado
 ]]--
 
-function Estagio.draw(level, conj)
-    Juncao.drawConjunto(conj);
+function Estagio.draw(level)
     if level == 1 then
         love.graphics.setColor(0, 155, 0);
         love.graphics.rectangle("fill", 0, 300, 200, 300);
