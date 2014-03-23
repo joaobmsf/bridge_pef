@@ -81,7 +81,13 @@ function Game.draw()
 	Juncao.drawConjunto(Game.conj);
 	if Game.estado == Game.JUNCAO_SELECIONADA then
 		love.graphics.setColor(255, 0, 0, 100);
-		love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, love.mouse.getX(), love.mouse.getY());
+        local dista = math.sqrt(math.pow((Game.juncaoSelecionada.pos.x - love.mouse.getX()),2)+math.pow((Game.juncaoSelecionada.pos.y - love.mouse.getY()),2))
+        if dista <= Game.maxAresta then
+            love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, love.mouse.getX(), love.mouse.getY());
+        else
+            local angulo = math.atan2(Game.juncaoSelecionada.pos.y - love.mouse.getY(), Game.juncaoSelecionada.pos.x - love.mouse.getX());
+            love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, Game.juncaoSelecionada.pos.x - Game.maxAresta*math.cos(angulo), Game.juncaoSelecionada.pos.y - Game.maxAresta*math.sin(angulo));
+        end
 	elseif Game.estado == Game.ARESTA_SELECIONADA then
 		Aresta.draw(Game.arestaSelecionada, {255, 0, 0});		
 	end
