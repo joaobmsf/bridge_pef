@@ -28,7 +28,7 @@ end
 function Juncao.getNewId(conjunto)
 	conjunto.nJuncoes = conjunto.nJuncoes + 1;
 	
-	return id;
+	return conjunto.nJuncoes;
 end
 
 --[[ 
