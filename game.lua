@@ -108,13 +108,23 @@ function Game.keypressed(key, isrepeat)
 			if key == "delete" then
 				Aresta.del(Game.arestaSelecionada);
 				Game.estado = Game.CRIANDO_ARESTA;
+				Game.lastClicked = nil;
 			elseif key == " " then
 				if Game.arestaSelecionada.tipo == Aresta.CAMINHO then
 					Aresta.mudarTipo(Game.arestaSelecionada, Aresta.ESTRUTURA);
 				elseif Game.arestaSelecionada.tipo == Aresta.ESTRUTURA then
 					Aresta.mudarTipo(Game.arestaSelecionada, Aresta.CAMINHO);
 				end
+			elseif key == "escape" then
+					Game.estado = Game.CRIANDO_ARESTA;
+					Game.lastClicked = nil;							
 			end
+		elseif Game.estado == Game.JUNCAO_SELECIONADA then
+			if key == "escape" then
+				print("ola");
+				Game.estado = Game.CRIANDO_ARESTA;
+				Game.lastClicked = nil;
+			end	
 		end
 	end
 end
