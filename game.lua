@@ -145,6 +145,8 @@ function Game.keypressed(key, isrepeat)
 				elseif Game.arestaSelecionada.tipo == Aresta.ESTRUTURA then
 					Aresta.mudarTipo(Game.arestaSelecionada, Aresta.CAMINHO);
 				end
+				Game.estado = Game.CRIANDO_ARESTA;
+				Game.lastClicked = nil;
 			elseif key == "escape" then
 					Game.estado = Game.CRIANDO_ARESTA;
 					Game.lastClicked = nil;							
