@@ -9,7 +9,7 @@ function Aresta.atualizaN()
 	Aresta.n = Aresta.n + 1
 end
 
-function Aresta.getNewID()
+function Aresta.getNewId()
 	Aresta.atualizaN();
 	
 	return Aresta.n;
@@ -17,7 +17,7 @@ end
 
 function Aresta.new(juncao1, juncao2)
 	local aresta = {}
-	aresta.id = Aresta.getNewID();
+	aresta.id = Aresta.getNewId();
 	aresta.j1 = juncao1;
 	aresta.j2 = juncao2;
 
