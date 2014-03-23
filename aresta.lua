@@ -6,7 +6,7 @@ end
 
 
 function Aresta.atualizaN()
-	Aresta.n = Aresta
+	Aresta.n = Aresta.n + 1
 end
 
 function Aresta.getNewID()
