@@ -68,3 +68,16 @@ function Juncao.new(pos, tipo, conjunto)
 	
 	return juncao;
 end
+
+function Juncao.imprime(conjunto)
+	for i = 1, conjunto.nJuncoes do
+		for j = 1, conjunto.nJuncoes do
+			if i == j or conjunto.matrix[i][j] == nil then
+				io.write("# ");
+			else 
+				io.write(conjunto.matrix[i][j].id.." ");
+			end
+		end	
+		io.write("\n");
+	end
+end
