@@ -20,3 +20,7 @@ end
 function love.mousereleased(x, y, button)
    Game.mousereleased(x, y, button);
 end
+
+function love.keypressed(key, isrepeat)
+	Game.keypressed(key, isrepeat);
+end

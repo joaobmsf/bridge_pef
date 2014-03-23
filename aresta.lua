@@ -61,3 +61,15 @@ function Aresta.draw(aresta, color)
 	
 	love.graphics.line(x1, y1, x2, y2);	
 end
+
+function Aresta.mudarTipo(aresta, tipo)
+	print("Ola");
+
+	aresta.tipo = tipo;
+end
+
+function Aresta.del(aresta)
+	local conj = aresta.j1.conjunto;
+	conj.matrix[aresta.j1.id][aresta.j2.id] = nil;
+	conj.matrix[aresta.j2.id][aresta.j1.id] = nil;
+end
