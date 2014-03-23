@@ -15,3 +15,10 @@ function Vetor2D.new(x, y)
 
 	return vetor;
 end
+
+function Vetor2D.distancia(v1, v2)
+	local dx = v1.x - v2.x;
+	local dy = v1.y - v2.y;
+
+	return math.sqrt(dx*dx + dy*dy);
+end

@@ -103,8 +103,7 @@ function Juncao.drawConjunto(conjunto)
 			if i ~= j and conjunto.matrix[i][j] ~= nil then
 				Aresta.draw(conjunto.matrix[i][j]);
 			end
-		end	
-		io.write("\n");
+		end
 	end
 	for i = 1, conjunto.nJuncoes do
 		Juncao.draw(conjunto.juncoes[i]);
