@@ -1,0 +1,9 @@
+Projeto de PEF2309
+
+Esse projeto é feito em lua usando a engine Love2d.
+	Então é necessário instalar:
+		- Lua : https://code.google.com/p/luaforwindows/downloads/list (windows)
+		- Engine Love2d: https://love2d.org/ (todos os OS)
+		
+	Para usar o love2d é bem simples: Basta arrastar a pasta do jogo para o executavel do love2d.
+	
