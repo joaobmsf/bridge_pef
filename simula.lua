@@ -79,7 +79,7 @@ function Simula.inicia(conj)
 	-- Set up world
 	love.physics.setMeter(pixelInMeter)
 	Simula.world = love.physics.newWorld(0, 9.81*pixelInMeter, true);
-	Simula.trem = Trem.novo(Simula.world, pixelInMeter);
+	Simula.trem, Simula.wheel1, Simula.wheel2 = Trem.novo(Simula.world, pixelInMeter);
 	
 	for i = 1, conj.nJuncoes do
 		for j = 1, i do
@@ -96,6 +96,8 @@ end
 
 function Simula.update(dt)
 	if Simula.running == true then
+		Simula.trem.wheeljoint1:setMotorSpeed(20)
+		Simula.trem.wheeljoint2:setMotorSpeed(20)
 		Simula.world:update(dt)
 	end
 end
@@ -105,7 +107,10 @@ function Simula.draw()
 	if Simula.running == true then
 		print("ola");
 		love.graphics.setColor(200, 156, 27);
-		love.graphics.polygon("fill", Simula.trem.body:getWorldPoints(Simula.trem.shape:getPoints()));  
+		love.graphics.polygon("fill", Simula.trem.body:getWorldPoints(Simula.trem.shape:getPoints()))
+		love.graphics.setColor(40, 46, 127);
+		love.graphics.circle("line", Simula.wheel1.body:getX(), Simula.wheel1.body:getY(), Simula.wheel1.shape:getRadius())  
+		love.graphics.circle("line", Simula.wheel2.body:getX(), Simula.wheel2.body:getY(), Simula.wheel2.shape:getRadius()) 		
 	end
 end
 
