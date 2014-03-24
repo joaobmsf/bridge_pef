@@ -19,6 +19,7 @@ function Juncao.newConjunto()
 	conjuntoJuncoes.id       = Juncao.newConjuntoId();
 	conjuntoJuncoes.nJuncoes = 0;
 	conjuntoJuncoes.juncoes  = {}
+	conjuntoJuncoes.arestas  = {}
 	conjuntoJuncoes.matrix   = {};
 	conjuntoJuncoes.vazio    = true;
 	
@@ -53,6 +54,7 @@ function Juncao.addAresta(aresta, conjunto)
 	
 	conjunto.matrix[id1][id2] = aresta;
 	conjunto.matrix[id2][id1] = aresta;
+	conjunto.aresta[aresta.id] = aresta;
 end
 
 --[[ 
