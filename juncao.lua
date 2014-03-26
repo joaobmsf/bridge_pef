@@ -20,6 +20,7 @@ function Juncao.newConjunto()
 	conjuntoJuncoes.nJuncoes = 0;
 	conjuntoJuncoes.juncoes  = {}
 	conjuntoJuncoes.arestas  = {}
+	conjuntoJuncoes.nArestas = 0;
 	conjuntoJuncoes.matrix   = {};
 	conjuntoJuncoes.vazio    = true;
 	
@@ -55,6 +56,7 @@ function Juncao.addAresta(aresta, conjunto)
 	conjunto.matrix[id1][id2] = aresta;
 	conjunto.matrix[id2][id1] = aresta;
 	conjunto.arestas[aresta.id] = aresta;
+	conjunto.nArestas = #(conjunto.arestas)
 end
 
 --[[ 

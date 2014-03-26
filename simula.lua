@@ -1,8 +1,8 @@
 require 'trem'
-
 require 'aresta'
 
 Simula = {}
+Simula.TREM_P = 10000
 
 function Simula.drawBotao (megaestado)
     love.graphics.setColor(0, 0, 0);
@@ -93,7 +93,7 @@ function Simula.inicia(conj)
 	end
 
     Simula.trem, Simula.wheel1, Simula.wheel2 = Trem.novo(Simula.world, pixelInMeter, edges);
-
+	Simula.trem.pos = {x = 0, y = 0}
 	Simula.running = true;
 end
 
@@ -123,33 +123,36 @@ function Simula.criaMatrixG()
 	local matrixGY = {}
 	local conj    = Simula.conj
 	
+	--Cria matrizes X e Y
 	for i = 1, conj.nJuncoes do
 		matrixGX[i] = {}
 		matrixGY[i] = {}
 	end
-
-	for i = 1, conj.nJuncoes do
-		for j = i, conj.nJuncoes do 
-			matrixGX[i][j] = 0;
-			matrixGY[i][j] = 0;
-			local arestaij = conj.matrix[i][j];
-			if  arestaij ~= nil then
-				local dx = arestaij.j2.pos.x - arestaij.j1.pos.x;
-				local dy = arestaij.j2.pos.y - arestaij.j1.pos.y;
-				local hi = math.sqrt(dx*dx + dy*dy);
-				local cosseno = dx/hi;
-				local seno    = dy/hi;
-				
-				matrixGX[i][j] = cosseno;
-				matrixGY[i][j] = seno;
-			end
-			if i ~= j then
-				matrixGX[j][i] = - matrixGX[i][j];
-				matrixGY[j][i] = - matrixGY[i][j];
-			end
-		end
+	
+	--Passa por todas as arestas
+	for i = 1, conj.nArestas do 
+		local aresta = conj.arestas[i];
+		local j1 = aresta.j1.id;
+		local j2 = aresta.j2.id;
+		matrixGX[j1][i] = math.cos(aresta.ang);
+		matrixGX[j2][i] = - matrixGX[j1][i];
+		
+		matrixGY[j1][i] = math.sin(aresta.ang);
+		matrixGY[j2][i] = - matrixGY[j1][i];		
 	end
+	
+	local firstJuncaoid = 8;
+	local lastJuncaoid = 94;
+	matrixGX[firstJuncaoid][conj.nArestas+1] =  1;
+	matrixGX[lastJuncaoid][conj.nArestas+1]  = -1;
+	
+	local l = conj.juncoes[lastJuncaoid].pos.x - conj.juncoes[firstJuncaoid].pos.x;
+	local x = Simula.trem.pos.x - conj.juncoes[firstJuncaoid].pos.x;
+	
+	matrixGY[firstJuncaoid][conj.nArestas+2] = Simula.TREM_P * (l - x)/l;
+	matrixGY[lastJuncaoid][conj.nArestas+2]  = Simula.TREM_P * x/l;
 
+	
 	return matrixGX, matrixGY;
 end
 

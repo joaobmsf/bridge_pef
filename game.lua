@@ -130,6 +130,7 @@ function Game.draw()
         Ui.drawBotao(Game.tipoAresta)
 		if Game.estado == Game.JUNCAO_SELECIONADA then
 			love.graphics.setColor(255, 0, 0, 100);
+			love.graphics.print(Game.juncaoSelecionada.id, 10, 10);
 			local dista = math.sqrt(math.pow((Game.juncaoSelecionada.pos.x - love.mouse.getX()),2)+math.pow((Game.juncaoSelecionada.pos.y - love.mouse.getY()),2))
 			if dista <= Game.maxAresta then
 				love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, love.mouse.getX(), love.mouse.getY());
