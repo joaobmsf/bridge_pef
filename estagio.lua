@@ -16,7 +16,7 @@ function Estagio.load(level, conj)
         n = 1
         for x = 0, 8 do
             for y = 0, 10 do
-                if (x == 0 and y>=6) or (x == 8 and y>=4) or (y == 10)then
+                if (x == 0 and y>=6) or (x == 8 and y>=4) or (y == 10) then
                     jun[n] = Juncao.new(Vetor2D.new(200 + (x*50), y*50), Juncao.FIXA, conj);
                 else
                     jun[n] = Juncao.new(Vetor2D.new(200 + (x*50), y*50), Juncao.LIVRE, conj);

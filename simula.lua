@@ -97,6 +97,26 @@ function Simula.inicia(conj)
 	Simula.running = true;
 end
 
+function Simula.verificaAresta(conj)
+	Simula.trem.pos = Vetor2D.new(Simula.trem.body:getX(),Simula.trem.body:getY());
+	for i = 1, conj.nJuncoes do
+		for j = 1, i do
+			if i ~= j and conj.matrix[i][j] ~= nil then
+				if conj.matrix[i][j].tipo == Aresta.CAMINHO then
+					local dista = Vetor2D.distanciaPontoReta(conj.juncoes[i].pos, conj.juncoes[j].pos, Simula.trem.pos);
+					local inter = Vetor2D.estaNoIntervalo(conj.juncoes[i].pos, conj.juncoes[j].pos, Simula.trem.pos, 15);
+					
+					if dista <= 15 and inter == true then
+						return conj.matrix[i][j];
+					end
+				end
+			end
+		end
+	end
+	return nil;
+end
+
+
 function Simula.update(dt)
 	if Simula.running == true then
 		Simula.trem.wheeljoint1:setMotorSpeed(15)
@@ -112,6 +132,9 @@ function Simula.draw(megaestado)
 		print("ola");
 		love.graphics.setColor(200, 156, 27);
 		love.graphics.polygon("fill", Simula.trem.body:getWorldPoints(Simula.trem.shape:getPoints()))
+		if Simula.trem.pos ~= nil then
+			love.graphics.print(Simula.trem.body:getX().." "..Simula.trem.body:getY(),10,10);
+		end
 		love.graphics.setColor(40, 46, 127);
 		love.graphics.circle("line", Simula.wheel1.body:getX(), Simula.wheel1.body:getY(), Simula.wheel1.shape:getRadius())  
 		love.graphics.circle("line", Simula.wheel2.body:getX(), Simula.wheel2.body:getY(), Simula.wheel2.shape:getRadius()) 		
