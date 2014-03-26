@@ -1,21 +1,21 @@
 require 'trem'
 require 'aresta'
+
 Simula = {}
 
-function Simula.drawBotao ()
+function Simula.drawBotao (megaestado)
     love.graphics.setColor(0, 0, 0);
     love.graphics.rectangle("fill", 25, 525, 50, 50);    
     love.graphics.setColor(255, 255, 255);
-    love.graphics.print("Play",37.5,545);
+    if megaestado == Game.CONSTRUCAO then
+        love.graphics.print("Play",37.5,545);
+    else
+        love.graphics.print("Edit",37.5,545);
+    end
 end
 
-function Simula.drawBotaoooooooooo ()
-    love.graphics.setColor(0, 0, 200);
-    love.graphics.rectangle("fill", 525, 525, 50, 50);
-end
 
 function Simula.verificaPlay(conj)
-    
     for i = 1, conj.nJuncoes do
 		for j = 1, i do
 			if i ~= j and conj.matrix[i][j] ~= nil then
@@ -23,7 +23,6 @@ function Simula.verificaPlay(conj)
             end
         end
     end
-
     local flag=1;
     while flag == 1 do
         flag = 0;
@@ -67,30 +66,32 @@ function Simula.verificaPlay(conj)
 end
 
 function Simula.addEdgeShape(aresta)
-	edge = {}
+	local edge = {}
 	edge.body = love.physics.newBody(Simula.world, aresta.j1.pos.x, aresta.j1.pos.y)
 	edge.shape = love.physics.newEdgeShape(0, 0, aresta.j2.pos.x - aresta.j1.pos.x, aresta.j2.pos.y - aresta.j1.pos.y);
 	edge.fixture = love.physics.newFixture(edge.body, edge.shape)
 	edge.fixture:setFriction(3)
+    return edge
 end
 
 function Simula.inicia(conj)
 	local pixelInMeter = 50;
 	-- Set up world
 	love.physics.setMeter(pixelInMeter)
-	Simula.world = love.physics.newWorld(0, 9.81*pixelInMeter, true);
-	Simula.trem, Simula.wheel1, Simula.wheel2 = Trem.novo(Simula.world, pixelInMeter);
-	
-	for i = 1, conj.nJuncoes do
+	Simula.world = love.physics.newWorld(0, 20.81*pixelInMeter, true);
+	local edges = {}
+    for i = 1, conj.nJuncoes do
 		for j = 1, i do
 			if i ~= j and conj.matrix[i][j] ~= nil then
 				if conj.matrix[i][j].tipo == Aresta.CAMINHO then
-				 Simula.addEdgeShape(conj.matrix[i][j]);
+				 edges[#edges] = Simula.addEdgeShape(conj.matrix[i][j]);
 				end				
 			end
 		end
-	end 
-	
+	end
+
+    Simula.trem, Simula.wheel1, Simula.wheel2 = Trem.novo(Simula.world, pixelInMeter, edges);
+
 	Simula.running = true;
 end
 
@@ -102,8 +103,8 @@ function Simula.update(dt)
 	end
 end
 
-function Simula.draw()
-	Simula.drawBotao()
+function Simula.draw(megaestado)
+	Simula.drawBotao(megaestado)
 	if Simula.running == true then
 		print("ola");
 		love.graphics.setColor(200, 156, 27);
