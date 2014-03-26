@@ -60,6 +60,8 @@ function Game.simulacaoUp (dt)
         Game.lastClicked = nil
     end
     Simula.update(dt);
+
+    Game.iAresta = Simula.verificaAresta(Game.conj);
 end
 
 function Game.construcaoUp (dt)
@@ -124,7 +126,10 @@ end
 function Game.draw()
 	Estagio.draw(Game.level);
     Simula.draw(Game.megaEstado)
-	Juncao.drawAresta(Game.conj);
+    Juncao.drawAresta(Game.conj);
+	if Game.iAresta ~= nil then
+	Aresta.draw(Game.iAresta, {255, 0, 0});
+	end
 	if Game.megaEstado == Game.CONSTRUCAO then
         Juncao.drawJuncao(Game.conj);
         Ui.drawBotao(Game.tipoAresta)
