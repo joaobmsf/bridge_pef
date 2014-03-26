@@ -102,7 +102,7 @@ function Simula.update(dt)
 		Simula.trem.wheeljoint1:setMotorSpeed(20)
 		Simula.trem.wheeljoint2:setMotorSpeed(20)
 		Simula.world:update(dt)
-		Simula.criaMatrix(Simula.conj)
+		Simula.matriz = Simula.criaMatrixG(Simula.conj)
 	end
 end
 
@@ -118,12 +118,39 @@ function Simula.draw(megaestado)
 	end
 end
 
-function Simula.criaMatrix(conj)
-
-	for i = 1, conj.nJuncoes do 
+function Simula.criaMatrixG()
+	local matrixGX = {}
+	local matrixGY = {}
+	local conj    = Simula.conj
 	
+	for i = 1, conj.nJuncoes do
+		matrixGX[i] = {}
+		matrixGY[i] = {}
 	end
 
+	for i = 1, conj.nJuncoes do
+		for j = i, conj.nJuncoes do 
+			matrixGX[i][j] = 0;
+			matrixGY[i][j] = 0;
+			local arestaij = conj.matrix[i][j];
+			if  arestaij ~= nil then
+				local dx = arestaij.j2.pos.x - arestaij.j1.pos.x;
+				local dy = arestaij.j2.pos.y - arestaij.j1.pos.y;
+				local hi = math.sqrt(dx*dx + dy*dy);
+				local cosseno = dx/hi;
+				local seno    = dy/hi;
+				
+				matrixGX[i][j] = cosseno;
+				matrixGY[i][j] = seno;
+			end
+			if i ~= j then
+				matrixGX[j][i] = - matrixGX[i][j];
+				matrixGY[j][i] = - matrixGY[i][j];
+			end
+		end
+	end
+
+	return matrixGX, matrixGY;
 end
 
 
