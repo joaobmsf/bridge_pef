@@ -5,6 +5,7 @@ require 'testes'
 require 'colisoes'
 require 'estagio'
 require 'simula'
+require 'ui'
 
 Game = {}
 
@@ -26,6 +27,9 @@ function Game.load()
 	Game.megaEstado = Game.CONSTRUCAO;
 	Game.estado = Game.CRIANDO_ARESTA;
 	
+    Game.tipoAresta = Aresta.ESTRUTURA;
+    
+
 	Game.level = 1;
 	Game.maxAresta = 50*math.sqrt(2);
 	
@@ -50,17 +54,28 @@ function Game.update(dt)
 end
 
 function Game.simulacaoUp (dt)
+    botaoCol = Colisoes.mouseBotao(Game.lastClicked);
+    if botaoCol == 1 then
+        Game.megaEstado = Game.CONSTRUCAO
+        Game.lastClicked = nil
+    end
     Simula.update(dt);
 end
 
 function Game.construcaoUp (dt)
+    local t
     botaoCol = Colisoes.mouseBotao(Game.lastClicked);
     if botaoCol == 1 then
         local play = Simula.verificaPlay(Game.conj);
         if play == 1 then
             Game.megaEstado = Game.SIMULACAO;
 			Simula.inicia(Game.conj);
+            Game.lastClicked = nil
         end
+    elseif botaoCol == 2 then
+        Game.tipoAresta = Aresta.CAMINHO;
+    elseif botaoCol == 3 then
+        Game.tipoAresta = Aresta.ESTRUTURA;
     end
 
 	if Game.estado == Game.CRIANDO_ARESTA and Game.lastClicked ~= nil then
@@ -82,7 +97,7 @@ function Game.construcaoUp (dt)
 		if juncaoCol ~= nil and juncaoCol ~= Game.juncaoSelecionada then
 			if Game.conj.matrix[juncaoCol.id][Game.juncaoSelecionada.id] == nil
 			   and Vetor2D.distancia(juncaoCol.pos, Game.juncaoSelecionada.pos) <= Game.maxAresta then
-				Aresta.new(juncaoCol, Game.juncaoSelecionada, Aresta.ESTRUTURA);
+				Aresta.new(juncaoCol, Game.juncaoSelecionada, Game.tipoAresta);
 				Game.estado = Game.CRIANDO_ARESTA;
 				Game.juncaoSelecionada = nil;
 				Game.lastClicked       = nil;
@@ -108,10 +123,11 @@ end
 
 function Game.draw()
 	Estagio.draw(Game.level);
-    Simula.draw()
-	Juncao.drawConjunto(Game.conj);
-
+    Simula.draw(Game.megaEstado)
+	Juncao.drawAresta(Game.conj);
 	if Game.megaEstado == Game.CONSTRUCAO then
+        Juncao.drawJuncao(Game.conj);
+        Ui.drawBotao(Game.tipoAresta)
 		if Game.estado == Game.JUNCAO_SELECIONADA then
 			love.graphics.setColor(255, 0, 0, 100);
 			local dista = math.sqrt(math.pow((Game.juncaoSelecionada.pos.x - love.mouse.getX()),2)+math.pow((Game.juncaoSelecionada.pos.y - love.mouse.getY()),2))

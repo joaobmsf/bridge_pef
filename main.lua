@@ -5,6 +5,8 @@ require 'testes'
 require 'game'
 require 'estagio'
 require 'simula'
+require 'ui'
+
 
 function love.load() 
 	Game.load();

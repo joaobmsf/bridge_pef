@@ -99,7 +99,7 @@ function Juncao.draw(juncao)
 	love.graphics.circle("fill", juncao.pos.x, juncao.pos.y, Juncao.RAIO);	
 end
 
-function Juncao.drawConjunto(conjunto)
+function Juncao.drawAresta(conjunto)
 	for i = 1, conjunto.nJuncoes do
 		for j = 1, i do
 			if i ~= j and conjunto.matrix[i][j] ~= nil then
@@ -107,7 +107,9 @@ function Juncao.drawConjunto(conjunto)
 			end
 		end
 	end
-	for i = 1, conjunto.nJuncoes do
+end
+function Juncao.drawJuncao(conjunto)
+    for i = 1, conjunto.nJuncoes do
 		Juncao.draw(conjunto.juncoes[i]);
 	end
 end
