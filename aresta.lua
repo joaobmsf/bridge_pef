@@ -4,7 +4,7 @@ Aresta = {}
 
 function Aresta.load()
 	Aresta.n = 0;
-	Aresta.WIDTH = 10;
+	Aresta.WIDTH = 5;
 	Aresta.CAMINHO   = 1;
 	Aresta.ESTRUTURA = 2;
 end

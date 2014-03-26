@@ -99,8 +99,8 @@ end
 
 function Simula.update(dt)
 	if Simula.running == true then
-		Simula.trem.wheeljoint1:setMotorSpeed(20)
-		Simula.trem.wheeljoint2:setMotorSpeed(20)
+		Simula.trem.wheeljoint1:setMotorSpeed(15)
+		--Simula.trem.wheeljoint2:setMotorSpeed(15)
 		Simula.world:update(dt)
 		Simula.matriz = Simula.criaMatrixG(Simula.conj)
 	end
