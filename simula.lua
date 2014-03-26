@@ -132,9 +132,6 @@ function Simula.draw(megaestado)
 		print("ola");
 		love.graphics.setColor(200, 156, 27);
 		love.graphics.polygon("fill", Simula.trem.body:getWorldPoints(Simula.trem.shape:getPoints()))
-		if Simula.trem.pos ~= nil then
-			love.graphics.print(Simula.trem.body:getX().." "..Simula.trem.body:getY(),10,10);
-		end
 		love.graphics.setColor(40, 46, 127);
 		love.graphics.circle("line", Simula.wheel1.body:getX(), Simula.wheel1.body:getY(), Simula.wheel1.shape:getRadius())  
 		love.graphics.circle("line", Simula.wheel2.body:getX(), Simula.wheel2.body:getY(), Simula.wheel2.shape:getRadius()) 		

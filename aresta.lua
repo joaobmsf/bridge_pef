@@ -36,7 +36,8 @@ function Aresta.new(juncao1, juncao2, tipo)
 	aresta.tipo = tipo;
 	aresta.j1 = juncao1;
 	aresta.j2 = juncao2;
-	
+	aresta.forca = 0;
+
 	Juncao.addAresta(aresta, juncao1.conjunto);
 	
 	return aresta;
@@ -53,7 +54,7 @@ function Aresta.draw(aresta, color)
 	else
 		print("ERROR Aresta.draw: tipo inexistente");	
 	end
-	
+
 	local x1 = aresta.j1.pos.x;
 	local y1 = aresta.j1.pos.y;
 	local x2 = aresta.j2.pos.x;
