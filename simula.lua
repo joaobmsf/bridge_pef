@@ -1,4 +1,5 @@
 require 'trem'
+
 require 'aresta'
 
 Simula = {}
@@ -79,7 +80,8 @@ function Simula.inicia(conj)
 	-- Set up world
 	love.physics.setMeter(pixelInMeter)
 	Simula.world = love.physics.newWorld(0, 20.81*pixelInMeter, true);
-	local edges = {}
+	Simula.conj  = conj;
+	local edges  = {}
     for i = 1, conj.nJuncoes do
 		for j = 1, i do
 			if i ~= j and conj.matrix[i][j] ~= nil then
@@ -100,6 +102,7 @@ function Simula.update(dt)
 		Simula.trem.wheeljoint1:setMotorSpeed(20)
 		Simula.trem.wheeljoint2:setMotorSpeed(20)
 		Simula.world:update(dt)
+		Simula.criaMatrix(Simula.conj)
 	end
 end
 
@@ -115,9 +118,13 @@ function Simula.draw(megaestado)
 	end
 end
 
+function Simula.criaMatrix(conj)
 
+	for i = 1, conj.nJuncoes do 
+	
+	end
 
-
+end
 
 
 
