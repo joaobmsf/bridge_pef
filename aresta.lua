@@ -36,14 +36,14 @@ function Aresta.new(juncao1, juncao2, tipo)
 	aresta.tipo = tipo;
 	aresta.j1 = juncao1;
 	aresta.j2 = juncao2;
-	if(juncao1.pos.x > juncao2.pos.x || (juncao1.pos.x == juncao2.pos.x && juncao1.pos.y < juncao2.pos.y))
+	if(juncao1.pos.x > juncao2.pos.x or (juncao1.pos.x == juncao2.pos.x and juncao1.pos.y < juncao2.pos.y)) then
 		aresta.j1 = juncao2;
 		aresta.j2 = juncao1;
 	end
 	
 	local dx = aresta.j2.pos.x - aresta.j1.pos.x;
 	local dy = aresta.j1.pos.y - aresta.j2.pos.y;
-	aresta.ang = math.atan2(dx, dy);
+	aresta.ang = math.atan2(dy, dx);
 	
 	Juncao.addAresta(aresta, juncao1.conjunto);
 	

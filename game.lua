@@ -138,7 +138,8 @@ function Game.draw()
 				love.graphics.line(Game.juncaoSelecionada.pos.x, Game.juncaoSelecionada.pos.y, Game.juncaoSelecionada.pos.x - Game.maxAresta*math.cos(angulo), Game.juncaoSelecionada.pos.y - Game.maxAresta*math.sin(angulo));
 			end
 		elseif Game.estado == Game.ARESTA_SELECIONADA then
-			Aresta.draw(Game.arestaSelecionada, {255, 0, 0});		
+			Aresta.draw(Game.arestaSelecionada, {255, 0, 0});
+			love.graphics.print(Game.arestaSelecionada.ang, 10, 10);
 		end
 	end
 end
