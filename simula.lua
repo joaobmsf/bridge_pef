@@ -2,7 +2,7 @@ require 'trem'
 require 'aresta'
 
 Simula = {}
-Simula.TREM_P = 10000
+Simula.TREM_P = 100
 
 function Simula.drawBotao (megaestado)
     love.graphics.setColor(0, 0, 0);
@@ -137,7 +137,7 @@ function Simula.update(dt)
 			Simula.matrizGX, Simula.matrizGY = nil, nil;
 			Simula.matrizGX, Simula.matrizGY = Simula.criaMatrixG(Simula.conj);
 			print(Simula.matrizGX.teste.." "..Simula.matrizGY.teste);
-			Simula.gauss(Simula.matrizGX, Simula.conj.arestas, 'x');
+			--Simula.gauss(Simula.matrizGX, Simula.conj.arestas, 'x');
 			Simula.gauss(Simula.matrizGY, Simula.conj.arestas, 'y');
 		end
 	end
@@ -175,7 +175,7 @@ function Simula.criaMatrixG()
 		matrixGX[i][conj.nArestas+2] = 1;
 	end
 	
-	print("Arestas");
+	--print("Arestas");
 	--Passa por todas as arestas
 	for i = 1, conj.nArestas do 
 		local aresta = conj.arestas[i];
@@ -186,12 +186,12 @@ function Simula.criaMatrixG()
 		
 		matrixGY[j1][i] = math.sin(aresta.ang);
 		matrixGY[j2][i] = - matrixGY[j1][i];
-		print(aresta.j1.id.." "..aresta.j2.id);
+		--print(aresta.j1.id.." "..aresta.j2.id);
 	end
-	print("FIM Arestas");
+	--print("FIM Arestas");
 	
-	local firstJuncaoid = 4;
-	local lastJuncaoid = 26;
+	local firstJuncaoid = 7;
+	local lastJuncaoid = 93;
 	matrixGX[firstJuncaoid][conj.nArestas+1] =  1;
 	matrixGX[lastJuncaoid][conj.nArestas+1]  = -1;
 	
@@ -316,6 +316,7 @@ function Simula.gauss(m, arestas, eixo)
 		elseif eixo == 'y' then
 			arestas[i].forcay = m[i][#(m[i])];
 		end
+		arestas[i].forca = m[i][#(m[i])];
 		io.write(m[i][#(m[i])].." ");
 	end
 	io.write("\n");

@@ -55,8 +55,11 @@ function Juncao.addAresta(aresta, conjunto)
 	
 	conjunto.matrix[id1][id2] = aresta;
 	conjunto.matrix[id2][id1] = aresta;
-	conjunto.arestas[aresta.id] = aresta;
-	conjunto.nArestas = #(conjunto.arestas)
+	if aresta.ang ~= 0 then
+		conjunto.nArestas = conjunto.nArestas + 1;
+		conjunto.arestas[conjunto.nArestas] = aresta;
+	end
+	
 end
 
 --[[ 

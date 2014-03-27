@@ -129,7 +129,7 @@ function Game.draw()
     Simula.draw(Game.megaEstado)
     Juncao.drawAresta(Game.conj);
 	if Game.iAresta ~= nil then
-	Aresta.draw(Game.iAresta, {255, 0, 0});
+	--Aresta.draw(Game.iAresta, {255, 0, 0});
 	end
 	if Game.megaEstado == Game.CONSTRUCAO then
         Juncao.drawJuncao(Game.conj);
