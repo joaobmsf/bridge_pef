@@ -121,9 +121,13 @@ function Simula.update(dt)
 	if Simula.running == true then
 		Simula.trem.wheeljoint1:setMotorSpeed(15)
 		--Simula.trem.wheeljoint2:setMotorSpeed(15)
-		Simula.world:update(dt)
+		Simula.world:update(dt*0.4)
 		if Simula.conj.iAresta ~= nil then
-			Simula.matrizGX, Simula.matrizGY = Simula.criaMatrixG(Simula.conj)
+			Simula.matrizGX, Simula.matrizGY = nil, nil;
+			Simula.matrizGX, Simula.matrizGY = Simula.criaMatrixG(Simula.conj);
+			print(Simula.matrizGX.teste.." "..Simula.matrizGY.teste);
+			Simula.gauss(Simula.matrizGX, Simula.conj.arestas, 'x');
+			Simula.gauss(Simula.matrizGY, Simula.conj.arestas, 'y');
 		end
 	end
 end
@@ -138,8 +142,8 @@ function Simula.draw(megaestado)
 			love.graphics.print(Simula.trem.body:getX().." "..Simula.trem.body:getY(),10,10);
 		end
 		love.graphics.setColor(40, 46, 127);
-		love.graphics.circle("line", Simula.wheel1.body:getX(), Simula.wheel1.body:getY(), Simula.wheel1.shape:getRadius())  
-		love.graphics.circle("line", Simula.wheel2.body:getX(), Simula.wheel2.body:getY(), Simula.wheel2.shape:getRadius()) 		
+		love.graphics.circle("fill", Simula.wheel1.body:getX(), Simula.wheel1.body:getY(), Simula.wheel1.shape:getRadius())  
+		love.graphics.circle("fill", Simula.wheel2.body:getX(), Simula.wheel2.body:getY(), Simula.wheel2.shape:getRadius()) 		
 	end
 end
 
@@ -147,6 +151,8 @@ function Simula.criaMatrixG()
 	local matrixGX = {}
 	local matrixGY = {}
 	local conj    = Simula.conj
+	matrixGX.teste = "lolX";
+	matrixGY.teste = "lolY";
 	
 	--Cria matrizes X e Y
 	for i = 1, conj.nJuncoes do
@@ -159,6 +165,7 @@ function Simula.criaMatrixG()
 		end
 	end
 	
+	print("Arestas");
 	--Passa por todas as arestas
 	for i = 1, conj.nArestas do 
 		local aresta = conj.arestas[i];
@@ -168,8 +175,10 @@ function Simula.criaMatrixG()
 		matrixGX[j2][i] = - matrixGX[j1][i];
 		
 		matrixGY[j1][i] = math.sin(aresta.ang);
-		matrixGY[j2][i] = - matrixGY[j1][i];		
+		matrixGY[j2][i] = - matrixGY[j1][i];
+		print(aresta.j1.id.." "..aresta.j2.id);
 	end
+	print("FIM Arestas");
 	
 	local firstJuncaoid = 4;
 	local lastJuncaoid = 26;
@@ -188,6 +197,8 @@ function Simula.criaMatrixG()
 	matrixGY[conj.iAresta.j1.id][conj.nArestas+2] = - Simula.TREM_P * (lAresta - xAresta)/lAresta;
 	matrixGY[conj.iAresta.j2.id][conj.nArestas+2]  = - Simula.TREM_P * xAresta/lAresta;
 
+	
+	
 	--imprimeMatrix(matrixGX);
 	
 	return matrixGX, matrixGY;
@@ -208,41 +219,91 @@ function imprimeMatrix(m)
 	print("Fim impressao");
 end
 
-function Simula.gauss(m)
+function Simula.gauss(m, arestas, eixo)
 	
-	for i = 1, #(m[1]) - 3 do
+	print("Entrando:");
+		for ii = 1, #m do
+			for jj = 1, #(m[ii]) do
+				io.write(m[ii][jj].." ");
+			end
+			io.write("\n");
+		end
+	io.write("Fim\n");
+
+	-- Triangularização com condenssação pivotal
+	for i = 1, #(m[1]) - 2 do
 	
 		local indMaior = i;
-		
+		--print("Analisando o i: "..i);
+		--Encontra o maior
 		for j = i + 1, #m do 
-			if( m[j][i] > m[indMaior][i] ) then indMaior = j end			
+			if( math.abs(m[j][i]) > math.abs(m[indMaior][i]) ) then indMaior = j end			
 		end
 		
 		local maior = m[indMaior][i];
+		--print("Maior encontrado"..maior)
 		
+		--Troca o maior com a linha i
 		for j = i, #(m[i]) do
 			local temp = m[i][j];
 			m[i][j] = m[indMaior][j]/maior;
-			m[indMaior][j] = temp;
+			if i ~= indMaior then m[indMaior][j] = temp; end
 		end
-	
+		
+		--[[print("Troca:");
+			for ii = 1, #m do
+				for jj = 1, #(m[ii]) do
+					io.write(m[ii][jj].." ");
+				end
+				io.write("\n");
+			end
+		io.write("Fim\n");
+		]]--
+		-- Triangulariza
 		for j = i + 1, #m do
 			local maiorLocal = m[j][i];
 			for k = i, #(m[j]) do
 				m[j][k] = m[j][k]/maiorLocal - m[i][k];
 			end
+			
+			--[[print("Triangulariza:");
+			for ii = 1, #m do
+				for jj = 1, #(m[ii]) do
+					io.write(m[ii][jj].." ");
+				end
+				io.write("\n");
+			end
+			io.write("Fim\n");]]--
 		end
 	
 	end
-	local i = #(m[1]) - 2
 	
-	while i != 0 do
-		local vari = 0;
-		for j = i + 1, #(m[i]) do
-			vari = vari - m[i][j]*m[i][#(m[i])];
-			
-		end	
+	-- Imprime matriz
+	--[[for ii = 1, #m do
+		for jj = 1, #(m[ii]) do
+			io.write(m[ii][jj].." ");
+		end
+		io.write("\n");
+	end]]--
+	
+	i = #(m[1]) - 1;
+	while i ~= 0 do
+		local vari = -m[i][#(m[i])];
+		--print("VarI "..i.." "..vari);
+		for j = i + 1, #(m[i]) - 1 do
+			vari = vari - m[i][j]*m[j][#(m[i])];
+		end
+		if m[i][i] ~= 0 then m[i][#(m[i])] = vari/m[i][i]; else  m[i][#(m[i])] = 0 end
 		i = i - 1;
 	end
 	
+	for i = 1, #(m[1]) - 2 do
+		if eixo == 'x'then
+			arestas[i].forcax = m[i][#(m[i])];
+		elseif eixo == 'y' then
+			arestas[i].forcay = m[i][#(m[i])];
+		end
+		io.write(m[i][#(m[i])].." ");
+	end
+	io.write("\n");
 end

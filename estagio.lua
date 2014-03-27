@@ -12,7 +12,7 @@ function Estagio.load(level, conj)
     local n = 0
     if level == 1 then
     
-        jun[0] = Juncao.new(Vetor2D.new(0, 300), Juncao.FIXA, conj);
+        --jun[0] = Juncao.new(Vetor2D.new(0, 300), Juncao.FIXA, conj);
         n = 1
         for x = 0, 8 do
             for y = 4, 6 do
@@ -24,10 +24,10 @@ function Estagio.load(level, conj)
                 n = n + 1;
             end
         end
-        jun[n] = Juncao.new(Vetor2D.new(800, 200), Juncao.FIXA, conj);
+        --jun[n] = Juncao.new(Vetor2D.new(800, 200), Juncao.FIXA, conj);
         
-        Aresta.new(jun[0], jun[3], Aresta.CAMINHO);
-        Aresta.new(jun[n-3], jun[n], Aresta.CAMINHO);
+        --Aresta.new(jun[0], jun[3], Aresta.CAMINHO);
+        --Aresta.new(jun[n-3], jun[n], Aresta.CAMINHO);
     end
 end
 

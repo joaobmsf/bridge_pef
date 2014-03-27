@@ -17,8 +17,8 @@ end
 
 
 function Colisoes.mouseAresta(pos, conj)
-	for i = 2, conj.nJuncoes - 1 do
-		for j = 2, i do
+	for i = 1, conj.nJuncoes do
+		for j = 1, i do
 			if i ~= j and conj.matrix[i][j] ~= nil then
 				local dista = Vetor2D.distanciaPontoReta(conj.juncoes[i].pos, conj.juncoes[j].pos, pos);
 				local inter = Vetor2D.estaNoIntervalo(conj.juncoes[i].pos, conj.juncoes[j].pos, pos, Aresta.WIDTH/2.0);
