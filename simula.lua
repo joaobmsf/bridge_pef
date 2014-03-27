@@ -91,7 +91,18 @@ function Simula.inicia(conj)
 			end
 		end
 	end
+	local edge1 = {}
+	edge1.body = love.physics.newBody(Simula.world, 0, 300)
+	edge1.shape = love.physics.newEdgeShape(0, 0, 200 - 0, 300 - 300);
+	edge1.fixture = love.physics.newFixture(edge1.body, edge1.shape)
+	edge1.fixture:setFriction(3)
 
+	local edge2 = {}
+	edge2.body = love.physics.newBody(Simula.world, 800, 200)
+	edge2.shape = love.physics.newEdgeShape(0, 0, 600 - 800, 200 - 200);
+	edge2.fixture = love.physics.newFixture(edge2.body, edge2.shape)
+	edge2.fixture:setFriction(3)
+    
     Simula.trem, Simula.wheel1, Simula.wheel2 = Trem.novo(Simula.world, pixelInMeter, edges);
 
 	Simula.running = true;
