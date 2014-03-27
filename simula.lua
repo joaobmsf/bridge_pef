@@ -91,7 +91,18 @@ function Simula.inicia(conj)
 			end
 		end
 	end
+	local edge1 = {}
+	edge1.body = love.physics.newBody(Simula.world, 0, 300)
+	edge1.shape = love.physics.newEdgeShape(0, 0, 200 - 0, 300 - 300);
+	edge1.fixture = love.physics.newFixture(edge1.body, edge1.shape)
+	edge1.fixture:setFriction(3)
 
+	local edge2 = {}
+	edge2.body = love.physics.newBody(Simula.world, 800, 200)
+	edge2.shape = love.physics.newEdgeShape(0, 0, 600 - 800, 200 - 200);
+	edge2.fixture = love.physics.newFixture(edge2.body, edge2.shape)
+	edge2.fixture:setFriction(3)
+    
     Simula.trem, Simula.wheel1, Simula.wheel2 = Trem.novo(Simula.world, pixelInMeter, edges);
 	Simula.trem.pos = {x = 0, y = 0}
 	Simula.running = true;
@@ -138,9 +149,6 @@ function Simula.draw(megaestado)
 		--print("ola");
 		love.graphics.setColor(200, 156, 27);
 		love.graphics.polygon("fill", Simula.trem.body:getWorldPoints(Simula.trem.shape:getPoints()))
-		if Simula.trem.pos ~= nil then
-			love.graphics.print(Simula.trem.body:getX().." "..Simula.trem.body:getY(),10,10);
-		end
 		love.graphics.setColor(40, 46, 127);
 		love.graphics.circle("fill", Simula.wheel1.body:getX(), Simula.wheel1.body:getY(), Simula.wheel1.shape:getRadius())  
 		love.graphics.circle("fill", Simula.wheel2.body:getX(), Simula.wheel2.body:getY(), Simula.wheel2.shape:getRadius()) 		

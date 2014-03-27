@@ -105,7 +105,13 @@ function Juncao.drawAresta(conjunto)
 	for i = 1, conjunto.nJuncoes do
 		for j = 1, i do
 			if i ~= j and conjunto.matrix[i][j] ~= nil then
-				Aresta.draw(conjunto.matrix[i][j]);
+				if conjunto.matrix[i][j].tipo == Aresta.ESTRUTURA then
+					Aresta.draw(conjunto.matrix[i][j],{math.abs(conjunto.matrix[i][j].forca) + 95, 0, 0});
+				else
+					Aresta.draw(conjunto.matrix[i][j],{160,
+					 									160 - math.abs(conjunto.matrix[i][j].forca),
+					 									 160 - math.abs(conjunto.matrix[i][j].forca)});
+				end
 			end
 		end
 	end
