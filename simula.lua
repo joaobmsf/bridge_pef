@@ -163,6 +163,8 @@ function Simula.criaMatrixG()
 			matrixGX[i][j] = 0;
 			matrixGY[i][j] = 0;
 		end
+		
+		matrixGX[i][conj.nArestas+2] = 1;
 	end
 	
 	print("Arestas");
@@ -260,22 +262,25 @@ function Simula.gauss(m, arestas, eixo)
 		io.write("Fim\n");
 		]]--
 		-- Triangulariza
-		for j = i + 1, #m do
-			local maiorLocal = m[j][i];
-			for k = i, #(m[j]) do
-				m[j][k] = m[j][k]/maiorLocal - m[i][k];
-			end
-			
-			--[[print("Triangulariza:");
-			for ii = 1, #m do
-				for jj = 1, #(m[ii]) do
-					io.write(m[ii][jj].." ");
+		if i >= #(m[1]) - 1 then
+			for j = i + 1, #m do
+				local maiorLocal = m[j][i];
+				if maiorLocal ~= 0 then
+						for k = i, #(m[j]) do
+							m[j][k] = m[j][k]/maiorLocal - m[i][k];
+						end
 				end
-				io.write("\n");
+				
+				--[[print("Triangulariza:");
+				for ii = 1, #m do
+					for jj = 1, #(m[ii]) do
+						io.write(m[ii][jj].." ");
+					end
+					io.write("\n");
+				end
+				io.write("Fim\n");]]--
 			end
-			io.write("Fim\n");]]--
 		end
-	
 	end
 	
 	-- Imprime matriz
