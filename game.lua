@@ -59,9 +59,10 @@ function Game.simulacaoUp (dt)
         Game.megaEstado = Game.CONSTRUCAO
         Game.lastClicked = nil
     end
-    Simula.update(dt);
 
     Game.iAresta = Simula.verificaAresta(Game.conj);
+	Game.conj.iAresta = Game.iAresta;
+	Simula.update(dt);
 end
 
 function Game.construcaoUp (dt)
@@ -180,7 +181,7 @@ function Game.keypressed(key, isrepeat)
 				end
 			elseif Game.estado == Game.JUNCAO_SELECIONADA then
 				if key == "escape" then
-					print("ola");
+					print("Escape");
 					Game.estado = Game.CRIANDO_ARESTA;
 					Game.lastClicked = nil;
 				end	

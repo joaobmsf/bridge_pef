@@ -71,7 +71,7 @@ function Aresta.draw(aresta, color)
 end
 
 function Aresta.mudarTipo(aresta, tipo)
-	print("Ola");
+	print("Mudado o tipo");
 
 	aresta.tipo = tipo;
 end

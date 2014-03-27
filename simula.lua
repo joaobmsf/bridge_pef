@@ -122,14 +122,16 @@ function Simula.update(dt)
 		Simula.trem.wheeljoint1:setMotorSpeed(15)
 		--Simula.trem.wheeljoint2:setMotorSpeed(15)
 		Simula.world:update(dt)
-		Simula.matriz = Simula.criaMatrixG(Simula.conj)
+		if Simula.conj.iAresta ~= nil then
+			Simula.matrizGX, Simula.matrizGY = Simula.criaMatrixG(Simula.conj)
+		end
 	end
 end
 
 function Simula.draw(megaestado)
 	Simula.drawBotao(megaestado)
 	if Simula.running == true then
-		print("ola");
+		--print("ola");
 		love.graphics.setColor(200, 156, 27);
 		love.graphics.polygon("fill", Simula.trem.body:getWorldPoints(Simula.trem.shape:getPoints()))
 		if Simula.trem.pos ~= nil then
@@ -150,6 +152,11 @@ function Simula.criaMatrixG()
 	for i = 1, conj.nJuncoes do
 		matrixGX[i] = {}
 		matrixGY[i] = {}
+		
+		for j = 1, conj.nArestas + 2 do
+			matrixGX[i][j] = 0;
+			matrixGY[i][j] = 0;
+		end
 	end
 	
 	--Passa por todas as arestas
@@ -164,8 +171,8 @@ function Simula.criaMatrixG()
 		matrixGY[j2][i] = - matrixGY[j1][i];		
 	end
 	
-	local firstJuncaoid = 8;
-	local lastJuncaoid = 94;
+	local firstJuncaoid = 4;
+	local lastJuncaoid = 26;
 	matrixGX[firstJuncaoid][conj.nArestas+1] =  1;
 	matrixGX[lastJuncaoid][conj.nArestas+1]  = -1;
 	
@@ -174,10 +181,68 @@ function Simula.criaMatrixG()
 	
 	matrixGY[firstJuncaoid][conj.nArestas+2] = Simula.TREM_P * (l - x)/l;
 	matrixGY[lastJuncaoid][conj.nArestas+2]  = Simula.TREM_P * x/l;
+	
+	local lAresta = conj.iAresta.j2.pos.x - conj.iAresta.j1.pos.x;
+	local xAresta = Simula.trem.pos.x - conj.iAresta.j1.pos.x;
+	
+	matrixGY[conj.iAresta.j1.id][conj.nArestas+2] = - Simula.TREM_P * (lAresta - xAresta)/lAresta;
+	matrixGY[conj.iAresta.j2.id][conj.nArestas+2]  = - Simula.TREM_P * xAresta/lAresta;
 
+	--imprimeMatrix(matrixGX);
 	
 	return matrixGX, matrixGY;
 end
 
+function imprimeMatrix(m) 
+	print("Inicio impressao");
+	for i = 1, #m do
+		for j = 1, #(m[i]) do
+			if m[i][j] ~= nil then
+				io.write(m[i][j].." ");
+			else
+				io.write("# ");
+			end
+		end	
+		io.write("\n");
+	end
+	print("Fim impressao");
+end
 
-
+function Simula.gauss(m)
+	
+	for i = 1, #(m[1]) - 3 do
+	
+		local indMaior = i;
+		
+		for j = i + 1, #m do 
+			if( m[j][i] > m[indMaior][i] ) then indMaior = j end			
+		end
+		
+		local maior = m[indMaior][i];
+		
+		for j = i, #(m[i]) do
+			local temp = m[i][j];
+			m[i][j] = m[indMaior][j]/maior;
+			m[indMaior][j] = temp;
+		end
+	
+		for j = i + 1, #m do
+			local maiorLocal = m[j][i];
+			for k = i, #(m[j]) do
+				m[j][k] = m[j][k]/maiorLocal - m[i][k];
+			end
+		end
+	
+	end
+	local i = #(m[1]) - 2
+	
+	while i != 0 do
+		local vari = 0;
+		for j = i + 1, #(m[i]) do
+			vari = vari - m[i][j]*m[i][#(m[i])];
+			
+		end	
+		i = i - 1;
+	end
+	
+end
